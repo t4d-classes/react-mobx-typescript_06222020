@@ -6,7 +6,7 @@ import { Color } from './models/color';
 import { ColorTool } from './components/ColorTool';
 import { CarTool } from './components/CarTool';
 
-const colors: Color[] = [
+const colorList: Color[] = [
   { id: 1, name: 'red', hexcode: 'FF0000' }, 
   { id: 2, name: 'black', hexcode: '000000' }, 
   { id: 3, name: 'blue', hexcode: '0000FF' }, 
@@ -16,7 +16,7 @@ const colors: Color[] = [
 ReactDOM.render(
   // React.createElement(HelloWorld),
   <>
-    <ColorTool />
+    <ColorTool colors={colorList} />
     <CarTool />
   </>,
   document.querySelector('#root'),
