@@ -1,12 +1,12 @@
-import React from 'react';
+import React, { FC } from 'react';
 
 import { Car } from '../models/car';
 
-export const CarTool = () => {
+export interface CarToolProps {
+  cars: Car[];
+}
 
-  const cars: Car[] = [
-    { id: 1, make: 'Ford', model: 'Fusion Hybrid', year: 2018, color: 'white', price: 45000 },
-  ];
+export const CarTool: FC<CarToolProps> = (props) => {
 
   return (
     <>
@@ -25,7 +25,7 @@ export const CarTool = () => {
           </tr>
         </thead>
         <tbody>
-          {cars.map(car => 
+          {props.cars.map(car => 
             <tr key={car.id}>
               <td>{car.id}</td>
               <td>{car.make}</td>
