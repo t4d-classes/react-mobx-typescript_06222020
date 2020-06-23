@@ -9,11 +9,7 @@ export interface CarTableProps {
   onDeleteCar: (carId: number) => void;
 }
 
-export const CarTable: FC<CarTableProps> = (props) => {
-
-  const deleteCar = (carId: number) => {
-    props.onDeleteCar(carId);
-  };
+export const CarTable: FC<CarTableProps> = ({ cars, onDeleteCar: deleteCar }) => {
 
   return (
     <table>
@@ -29,7 +25,7 @@ export const CarTable: FC<CarTableProps> = (props) => {
         </tr>
       </thead>
       <tbody>
-        {props.cars.map(car =>
+        {cars.map(car =>
           <CarViewRow key={car.id} car={car} onDeleteCar={deleteCar} />)}
       </tbody>
     </table>

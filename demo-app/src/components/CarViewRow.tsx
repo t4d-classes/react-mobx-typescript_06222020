@@ -7,7 +7,11 @@ export interface CarViewRowProps {
   onDeleteCar: (carId: number) => void;
 }
 
-export const CarViewRow: FC<CarViewRowProps> = (props) => {
+export const CarViewRow: FC<CarViewRowProps> = ({ car, onDeleteCar: deleteCar }) => {
+
+  // const car = props.car;
+  // const onDeleteCar = props.onDeleteCar;
+  // const { car, onDeleteCar } = props;
 
   // const deleteCar = () => {
   //   props.onDeleteCar(props.car.id!);
@@ -15,14 +19,14 @@ export const CarViewRow: FC<CarViewRowProps> = (props) => {
 
   return (
     <tr>
-      <td>{props.car.id}</td>
-      <td>{props.car.make}</td>
-      <td>{props.car.model}</td>
-      <td>{props.car.year}</td>
-      <td>{props.car.color}</td>
-      <td>{props.car.price}</td>
+      <td>{car.id}</td>
+      <td>{car.make}</td>
+      <td>{car.model}</td>
+      <td>{car.year}</td>
+      <td>{car.color}</td>
+      <td>{car.price}</td>
       <td>
-        <button type="button" onClick={() => props.onDeleteCar(props.car.id!)}>Delete</button>
+        <button type="button" onClick={() => deleteCar(car.id!)}>Delete</button>
       </td>
     </tr>
   );
