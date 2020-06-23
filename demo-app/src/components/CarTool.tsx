@@ -25,10 +25,14 @@ export const CarTool: FC<CarToolProps> = (props) => {
 
   };
 
+  const deleteCar = (carId: number) => {
+    setCars(cars.filter(c => c.id !== carId));
+  };
+
   return (
     <>
       <ToolHeader headerText="Car Tool" />
-      <CarTable cars={cars} />
+      <CarTable cars={cars} onDeleteCar={deleteCar} />
       <CarForm buttonText="Add Car" onSubmitCar={addCar} />
     </>
   );
