@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useState, ChangeEvent } from 'react';
 
 import { Car } from '../models/car';
 
@@ -7,6 +7,40 @@ export interface CarToolProps {
 }
 
 export const CarTool: FC<CarToolProps> = (props) => {
+
+  const [ carForm, setCarForm ] = useState({
+    make: '',
+    model: '',
+    year: 1900,
+    color: '',
+    price: 0,
+  });
+
+  const [ cars, setCars ] = useState(props.cars.slice());
+
+  const change = (e: ChangeEvent<HTMLInputElement>) => {
+
+    const newCarForm = {
+      ...carForm,
+      [ e.target.name ]: e.target.type === 'number'
+        ? Number(e.target.value) : e.target.value,
+    };
+
+    setCarForm(newCarForm);
+
+  };
+
+  const addCar = () => {
+
+    setCars(cars.concat({
+      ...carForm,
+      id: Math.max(...cars.map(c => c.id), 0) + 1,
+    }));
+
+  };
+
+  console.log('rendering Car Tool', carForm);
+
 
   return (
     <>
@@ -25,7 +59,7 @@ export const CarTool: FC<CarToolProps> = (props) => {
           </tr>
         </thead>
         <tbody>
-          {props.cars.map(car => 
+          {cars.map(car => 
             <tr key={car.id}>
               <td>{car.id}</td>
               <td>{car.make}</td>
@@ -36,6 +70,34 @@ export const CarTool: FC<CarToolProps> = (props) => {
             </tr>)}
         </tbody>
       </table>
+      <form>
+        <div>
+          <label>Make:</label>
+          <input type="text" name="make"
+            value={carForm.make} onChange={change} />
+        </div>
+        <div>
+          <label>Model:</label>
+          <input type="text" name="model"
+            value={carForm.model} onChange={change} />
+        </div>
+        <div>
+          <label>Year:</label>
+          <input type="number" name="year"
+            value={carForm.year} onChange={change} />
+        </div>
+        <div>
+          <label>Color:</label>
+          <input type="text" name="color"
+            value={carForm.color} onChange={change} />
+        </div>
+        <div>
+          <label>Price:</label>
+          <input type="number" name="price"
+            value={carForm.price} onChange={change} />
+        </div>
+        <button type="button" onClick={addCar}>Add Car</button>
+      </form>
     </>
   );
 

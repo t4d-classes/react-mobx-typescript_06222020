@@ -15,14 +15,16 @@ export const ColorTool: FC<ColorToolProps> = (props) => {
     hexcode: '',
   } /* initial state value */);
 
-  const [ colors, setColors ] = useState(props.colors.concat());
+  const [ colors, setColors ] = useState(props.colors.slice());
 
   const change = (e: ChangeEvent<HTMLInputElement>) => {
 
-    setColorForm(/* new colorForm object */{
+    const newColorForm = {
       ...colorForm, // copy the properties from colorForm on to the new object
       [ e.target.name ]: e.target.value, // assign the value of the input to the hexcode property
-    })
+    };
+
+    setColorForm(/* new colorForm object */ newColorForm);
 
   };
 
@@ -35,7 +37,7 @@ export const ColorTool: FC<ColorToolProps> = (props) => {
 
   };
 
-  console.log('rendering Color Tool');
+  console.log('rendering Color Tool', colorForm);
 
   return (
     <>
