@@ -4,10 +4,15 @@ import { Car } from '../models/car';
 
 export interface CarViewRowProps {
   car: Car;
+  onEditCar: (carId: number) => void;
   onDeleteCar: (carId: number) => void;
 }
 
-export const CarViewRow: FC<CarViewRowProps> = ({ car, onDeleteCar: deleteCar }) => {
+export const CarViewRow: FC<CarViewRowProps> = ({
+  car,
+  onEditCar: editCar,
+  onDeleteCar: deleteCar,
+}) => {
 
   // const car = props.car;
   // const onDeleteCar = props.onDeleteCar;
@@ -26,6 +31,7 @@ export const CarViewRow: FC<CarViewRowProps> = ({ car, onDeleteCar: deleteCar })
       <td>{car.color}</td>
       <td>{car.price}</td>
       <td>
+        <button type="button" onClick={() => editCar(car.id!)}>Edit</button>
         <button type="button" onClick={() => deleteCar(car.id!)}>Delete</button>
       </td>
     </tr>

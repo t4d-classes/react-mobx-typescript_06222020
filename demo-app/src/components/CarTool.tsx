@@ -14,7 +14,7 @@ export interface CarToolProps {
 export const CarTool: FC<CarToolProps> = (props) => {
 
   const [ cars, setCars ] = useState(props.cars.slice());
-
+  const [ editCarId, setEditCarId ] = useState(-1);
 
   const addCar = (car: Car) => {
 
@@ -32,7 +32,8 @@ export const CarTool: FC<CarToolProps> = (props) => {
   return (
     <>
       <ToolHeader headerText="Car Tool" />
-      <CarTable cars={cars} onDeleteCar={deleteCar} />
+      <CarTable cars={cars} editCarId={editCarId}
+        onEditCar={setEditCarId} onDeleteCar={deleteCar} />
       <CarForm buttonText="Add Car" onSubmitCar={addCar} />
     </>
   );
