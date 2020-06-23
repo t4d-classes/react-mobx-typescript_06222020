@@ -21,6 +21,7 @@ const carList: Car[] = [
 ReactDOM.render(
   <>
     <ColorTool colors={colorList} />
+    {/* React.createElement(CarTool, { cars: carList }); */}
     <CarTool cars={carList} />
   </>,
   document.querySelector('#root'),

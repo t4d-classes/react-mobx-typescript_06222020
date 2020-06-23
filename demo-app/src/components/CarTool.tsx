@@ -20,13 +20,12 @@ export const CarTool: FC<CarToolProps> = (props) => {
 
   const change = (e: ChangeEvent<HTMLInputElement>) => {
 
-    const newCarForm = {
+    setCarForm({
       ...carForm,
       [ e.target.name ]: e.target.type === 'number'
         ? Number(e.target.value) : e.target.value,
-    };
-
-    setCarForm(newCarForm);
+      // [ e.target.name ]: e.target.value,
+    });
 
   };
 
@@ -39,7 +38,7 @@ export const CarTool: FC<CarToolProps> = (props) => {
 
   };
 
-  console.log('rendering Car Tool', carForm);
+  console.log('rendering Car Tool', carForm, cars);
 
 
   return (
