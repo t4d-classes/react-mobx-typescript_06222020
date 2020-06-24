@@ -46,3 +46,7 @@ export const CarTable: FC<CarTableProps> = ({
   );
 
 };
+
+CarTable.defaultProps = {
+  cars: [],
+};

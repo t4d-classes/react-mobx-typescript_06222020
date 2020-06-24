@@ -1,9 +1,10 @@
 import React, { FC, useState } from 'react';
 
 import { Color } from '../models/color';
-import { useList } from '../hooks/useList' 
+import { useList } from '../hooks/useList';
 
 import { ToolHeader } from './ToolHeader';
+import { UnorderedList } from './UnorderedList';
 import { ColorForm } from './ColorForm';
 
 export interface ColorToolProps {
@@ -16,14 +17,15 @@ export const ColorTool: FC<ColorToolProps> = (props) => {
 
   return (
     <>
-      <ToolHeader />
-      <ul>
-        {colors.map(color => <li key={color.id}>
-          {color.name}
-          <button type="button"
-            onClick={() => removeColor(color.id!)}>X</button>
-        </li>)}
-      </ul>
+      <ToolHeader>
+        <h1>
+          Color Tool<br />
+          <small>The best color tool ever!</small>
+        </h1>
+      </ToolHeader>
+      <UnorderedList items={colors}
+        contentFn={c => c.name + ' - ' + c.hexcode}
+        onRemoveItem={itemKey => removeColor(Number(itemKey))} />
       <ColorForm buttonText="Add Color" onSubmitColor={addColor} />
     </>
   );

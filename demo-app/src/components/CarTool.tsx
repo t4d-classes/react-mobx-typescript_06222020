@@ -40,7 +40,12 @@ export const CarTool: FC<CarToolProps> = (props) => {
 
   return (
     <>
-      <ToolHeader headerText="Car Tool" />
+      <ToolHeader>
+        <h1>
+          Car Tool<br />
+          <small>The best car tool ever!</small>
+        </h1>
+      </ToolHeader>
       <CarTable cars={cars} editCarId={editCarId}
         onEditCar={setEditCarId} onDeleteCar={deleteCarAndCancelEditCar}
         onSaveCar={saveCarAndCancelEditCar} onCancelCar={cancelEditCar} />

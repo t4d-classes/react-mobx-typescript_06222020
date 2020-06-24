@@ -1,19 +1,21 @@
 import React, { FC } from 'react';
 
-export interface ToolHeaderProps {
-  headerText?: string;
-}
+// type SomeFunc = (msg: string) => void;
 
-export const ToolHeader: FC<ToolHeaderProps> = (props) => {
+// const doIt = (msg: string) => {
+//   console.log(msg)
+// };
+
+// const add = (a: number, b: number) => a + b;
+
+// doIt(String(add(1,2)));
+
+export const ToolHeader: FC<{}> = (props) => {
 
   return (
     <header>
-      <h1>{props.headerText}</h1>
+      {props.children}
     </header>
   );
 
-};
-
-ToolHeader.defaultProps = {
-  headerText: 'The Tool',
 };
