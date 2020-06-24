@@ -1,6 +1,7 @@
 import React, { FC, useState, ChangeEvent } from 'react';
 
 import { Car } from '../models/car';
+import { useForm } from '../hooks/useForm';
 
 export interface CarFormProps {
   buttonText?: string;
@@ -9,7 +10,7 @@ export interface CarFormProps {
 
 export const CarForm: FC<CarFormProps> = (props) => {
 
-  const [ carForm, setCarForm ] = useState({
+  const [ carForm, change, resetCarForm ] = useForm({
     make: '',
     model: '',
     year: 1900,
@@ -17,27 +18,9 @@ export const CarForm: FC<CarFormProps> = (props) => {
     price: 0,
   });
 
-  const change = (e: ChangeEvent<HTMLInputElement>) => {
-
-    setCarForm({
-      ...carForm,
-      [ e.target.name ]: e.target.type === 'number'
-        ? Number(e.target.value) : e.target.value,
-      // [ e.target.name ]: e.target.value,
-    });
-
-
-  }; // end of change
-
   const submitCar = () => {
     props.onSubmitCar({ ...carForm });
-    setCarForm({
-      make: '',
-      model: '',
-      year: 1900,
-      color: '',
-      price: 0,
-    });
+    resetCarForm();
   }
 
   return (

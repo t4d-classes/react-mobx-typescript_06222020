@@ -10,12 +10,16 @@ export interface CarTableProps {
   editCarId: number;
   onEditCar: (carId: number) => void;
   onDeleteCar: (carId: number) => void;
+  onSaveCar: (car: Car) => void;
+  onCancelCar: () => void;
 }
 
 export const CarTable: FC<CarTableProps> = ({
   cars, editCarId,
   onEditCar: editCar,
   onDeleteCar: deleteCar,
+  onSaveCar: saveCar,
+  onCancelCar: cancelCar,
 }) => {
 
   return (
@@ -33,8 +37,10 @@ export const CarTable: FC<CarTableProps> = ({
       </thead>
       <tbody>
         {cars.map(car => car.id === editCarId
-          ? <CarEditRow key={car.id} car={car} onSaveCar={() => null} onCancelCar={() => null} />
-          : <CarViewRow key={car.id} car={car} onEditCar={editCar} onDeleteCar={deleteCar} />)}
+          ? <CarEditRow key={car.id} car={car}
+              onSaveCar={saveCar} onCancelCar={cancelCar} />
+          : <CarViewRow key={car.id} car={car}
+              onEditCar={editCar} onDeleteCar={deleteCar} />)}
       </tbody>
     </table>
   );
