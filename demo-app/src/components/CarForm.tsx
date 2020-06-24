@@ -1,4 +1,4 @@
-import React, { FC, useState, ChangeEvent } from 'react';
+import React, { FC } from 'react';
 
 import { Car } from '../models/car';
 import { useForm } from '../hooks/useForm';
