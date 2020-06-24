@@ -1,5 +1,6 @@
-export interface Color {
-  id?: number;
+import { Item } from './item';
+ 
+export interface Color extends Item {
   name: string;
   hexcode: string;
 }

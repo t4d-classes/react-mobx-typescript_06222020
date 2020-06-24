@@ -1,6 +1,7 @@
-import React, { FC, useState, ChangeEvent } from 'react';
+import React, { FC } from 'react';
 
 import { Car } from '../models/car';
+import { useForm } from '../hooks/useForm';
 
 export interface CarEditRowProps {
   car: Car;
@@ -14,22 +15,13 @@ export const CarEditRow: FC<CarEditRowProps> = ({
   onCancelCar: cancelCar,
 }) => {
 
-  const [ carForm, setCarForm ] = useState({
+  const [ carForm, change ] = useForm({
     make: car.make,
     model: car.model,
     year: car.year,
     color: car.color,
     price: car.price,
   });
-
-  const change = (e: ChangeEvent<HTMLInputElement>) => {
-
-    setCarForm({
-      ...carForm,
-      [ e.target.name ]: e.target.type === 'number'
-        ? Number(e.target.value) : e.target.value,
-    });
-  };
 
   const saveCar = () => {
     onSaveCar({ ...carForm, id: car.id });

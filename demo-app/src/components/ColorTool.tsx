@@ -1,6 +1,7 @@
 import React, { FC, useState } from 'react';
 
 import { Color } from '../models/color';
+import { useList } from '../hooks/useList' 
 
 import { ToolHeader } from './ToolHeader';
 import { ColorForm } from './ColorForm';
@@ -11,16 +12,7 @@ export interface ColorToolProps {
 
 export const ColorTool: FC<ColorToolProps> = (props) => {
 
-  const [ colors, setColors ] = useState(props.colors.slice());
-
-  const addColor = (color: Color) => {
-
-    setColors(colors.concat({
-      ...color,
-      id: Math.max(...colors.map(c => c.id!), 0) + 1,
-    }));
-
-  };
+  const [ colors, addColor, , removeColor ] = useList(props.colors.slice());
 
   return (
     <>
@@ -28,6 +20,8 @@ export const ColorTool: FC<ColorToolProps> = (props) => {
       <ul>
         {colors.map(color => <li key={color.id}>
           {color.name}
+          <button type="button"
+            onClick={() => removeColor(color.id!)}>X</button>
         </li>)}
       </ul>
       <ColorForm buttonText="Add Color" onSubmitColor={addColor} />

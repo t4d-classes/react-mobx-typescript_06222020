@@ -1,6 +1,8 @@
 import React, { FC, useState } from 'react';
 
 import { Car } from '../models/car';
+// import { useCars } from '../hooks/useCars';
+import { useList } from '../hooks/useList';
 
 import { ToolHeader } from './ToolHeader';
 import { CarTable } from './CarTable';
@@ -13,28 +15,25 @@ export interface CarToolProps {
 
 export const CarTool: FC<CarToolProps> = (props) => {
 
-  const [ cars, setCars ] = useState(props.cars.slice());
+
+  const [ cars, addCar, saveCar, deleteCar ] = useList(props.cars.slice());
   const [ editCarId, setEditCarId ] = useState(-1);
 
-  const addCar = (car: Car) => {
-    setCars(cars.concat({
-      ...car,
-      id: Math.max(...cars.map(c => c.id!), 0) + 1,
-    }));
-    setEditCarId(-1);
+  const cancelEditCar = () => setEditCarId(-1);
+
+  const addCarAndCancelEditCar = (car: Car) => {
+    addCar(car);
+    cancelEditCar();
   };
 
-  const replaceCar = (car: Car) => {
-    const carIndex = cars.findIndex(c => c.id === car.id);
-    const newCars = cars.concat();
-    newCars[carIndex] = car;
-    setCars(newCars);
-    setEditCarId(-1);
+  const saveCarAndCancelEditCar = (car: Car) => {
+    saveCar(car);
+    cancelEditCar();
   };
 
-  const deleteCar = (carId: number) => {
-    setCars(cars.filter(c => c.id !== carId));
-    setEditCarId(-1);
+  const deleteCarAndCancelEditCar = (carId: number) => {
+    deleteCar(carId);
+    cancelEditCar();
   };
 
   console.log('updated cars', cars);
@@ -43,9 +42,9 @@ export const CarTool: FC<CarToolProps> = (props) => {
     <>
       <ToolHeader headerText="Car Tool" />
       <CarTable cars={cars} editCarId={editCarId}
-        onEditCar={setEditCarId} onDeleteCar={deleteCar}
-        onSaveCar={replaceCar} onCancelCar={() => setEditCarId(-1)} />
-      <CarForm buttonText="Add Car" onSubmitCar={addCar} />
+        onEditCar={setEditCarId} onDeleteCar={deleteCarAndCancelEditCar}
+        onSaveCar={saveCarAndCancelEditCar} onCancelCar={cancelEditCar} />
+      <CarForm buttonText="Add Car" onSubmitCar={addCarAndCancelEditCar} />
     </>
   );
 
