@@ -39,5 +39,122 @@
       To begin the development, run `npm start` or `yarn start`.
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
+    <!-- <script>
+
+      'use strict';
+
+      // function doIt() {
+      //   // call-site this
+      //   console.log(this);
+
+      //   // const that = this;
+
+      //   // function inner() {
+      //   //   console.log(that);
+      //   // }
+
+      //   const inner = () => {
+      //     // lexical this
+      //     console.log(this);
+      //   };
+
+      //   inner();
+      // }
+
+      // // doIt();
+      // // window.doIt();
+
+      // const o = {
+      //   id: 2,
+      //   doIt: doIt,
+      // };
+
+      // o.doIt();
+      // // console.log(window.doIt === o.doIt);
+
+      // // setTimeout(o.doIt, 4000);
+
+      // const a = {
+      //   name: 'a',
+      //   num: 12,
+      // };
+
+      // const b = Object.create(a);
+      // b.name = 'b';
+
+      // console.log(b.num);
+
+      // a.num = 15;
+      // console.log(b.num);
+
+      // b.num = 7;
+      // console.log(b.num);
+      // console.log(a.num);
+
+      // delete b.num;
+
+      // console.log(b.num);
+      // console.dir(b);
+
+      // const bindFn = function(fn, context) {
+
+      //   return function(...params) {
+      //     fn.call(context, ...params);
+      //   };
+
+      // }
+
+      // const fn = bindFn(function() { console.log(this); }, { id: 2 });
+
+      // fn();
+
+      // Array.prototype.map = function(tranformFn) {
+
+      //   const newArray = [];
+
+      //   for (let x = 0; x < this.length; x++) {
+      //     newArray.push(transformFn(this[x]));
+      //   } 
+
+      //   return newArray;
+      // };
+
+      class Person {
+
+        constructor(firstName, lastName) {
+          this.firstName = firstName;
+          this.lastName = lastName;
+
+          this.getFullName = this.getFullName.bind(this);
+        }
+
+        getFullName() {
+          return this.firstName + ' ' + this.lastName;
+        }
+      }
+
+      const p = new Person('Bob', 'Smith');
+      console.log(p.getFullName());
+
+      function Person2(firstName, lastName) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.getFullName = this.getFullName.bind(this);
+      }
+
+      Person2.prototype.getFullName = function() {
+        return this.firstName + ' ' + this.lastName;
+      };
+
+      const p2 = new Person2('Sally', 'Smith');
+      console.log(p2.getFullName());
+
+      console.dir(p);
+      console.dir(p2);
+
+      console.dir(Person);
+      console.dir(Person2);
+
+    </script> -->
   </body>
 </html>

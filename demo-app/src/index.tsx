@@ -1,30 +1,48 @@
-import React from 'react';
+import React, { FC } from 'react';
 import ReactDOM from 'react-dom';
+import { observable, action } from 'mobx';
+import { useObserver } from 'mobx-react-lite';
 
-import { Color } from './models/color';
-import { Car } from './models/car';
+import 'mobx-react-lite/batchingForReactDom';
 
-import { ColorTool } from './components/ColorTool';
-import { CarTool } from './components/CarTool';
+class CalcToolStore {
 
-const colorList: Color[] = [
-  { id: 1, name: 'red', hexcode: 'FF0000' }, 
-  { id: 2, name: 'black', hexcode: '000000' }, 
-  { id: 3, name: 'blue', hexcode: '0000FF' }, 
-  { id: 4, name: 'periwinkle', hexcode: 'CCCCFF' }, 
-];
+  @observable
+  result = 0;
 
-const carList: Car[] = [
-  { id: 1, make: 'Ford', model: 'Fusion Hybrid', year: 2018, color: 'white', price: 45000 },
-];
+  @action.bound
+  increment() {
+    this.result++;
+  }
+
+}
+
+interface CalcToolProps {
+  store: CalcToolStore;
+}
+
+const CalcTool: FC<CalcToolProps> = ({ store }) => {
+
+  return useObserver(() => {
+
+    return (
+      <form>
+        <div>Result: {store.result}</div>
+        <div>
+          <button type="button" onClick={store.increment}>
+            Increment
+          </button>
+        </div>
+      </form>
+    );
+
+  });
+
+};
+
+const calcToolStore = new CalcToolStore();
 
 ReactDOM.render(
-  <>
-    <ColorTool colors={colorList} />
-    {/* React.createElement(CarTool, { cars: carList }); */}
-    <CarTool cars={carList} />
-  </>,
+  <CalcTool store={calcToolStore} />,
   document.querySelector('#root'),
-
 );
-
