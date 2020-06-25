@@ -44,29 +44,29 @@ class CalcToolStore {
   get numOps() {
 
     // let's use this object as map, not a real object structue with a fixed set of properties
-    const numOpsCounts: any = {};
-
-    this.history.forEach(entry => {
-      if (numOpsCounts[entry.opName]) {
-        numOpsCounts[entry.opName]++;
-      } else {
-        numOpsCounts[entry.opName] = 1;
-      }
-    });
-
-    // const numOpsCounts = new Map<string, number>();
+    // const numOpsCounts: any = {};
 
     // this.history.forEach(entry => {
-    //   if (numOpsCounts.has(entry.opName)) {
-    //     const opCount = numOpsCounts.get(entry.opName);
-    //     if (opCount == null) {
-    //       return;
-    //     }
-    //     numOpsCounts.set(entry.opName, opCount + 1);
+    //   if (numOpsCounts[entry.opName]) {
+    //     numOpsCounts[entry.opName]++;
     //   } else {
-    //     numOpsCounts.set(entry.opName, 1);
+    //     numOpsCounts[entry.opName] = 1;
     //   }
     // });
+
+    const numOpsCounts = new Map<string, number>();
+
+    this.history.forEach(entry => {
+      if (numOpsCounts.has(entry.opName)) {
+        const opCount = numOpsCounts.get(entry.opName);
+        if (opCount == null) {
+          return;
+        }
+        numOpsCounts.set(entry.opName, opCount + 1);
+      } else {
+        numOpsCounts.set(entry.opName, 1);
+      }
+    });
 
     return numOpsCounts;
   }
@@ -172,18 +172,18 @@ const CalcTool: FC<CalcToolProps> = ({ store }) => {
         </ul>
         <table>
           <caption>Operation Counts</caption>
-          <tbody>
+          {/* <tbody>
             {Object.keys(numOpsCount).map(key => <tr key={key}>
               <th>{key}</th>
               <td>{numOpsCount[key]}</td>
             </tr>)}
-          </tbody>
-          {/* <tbody>
+          </tbody> */}
+          <tbody>
             {Array.from(numOpsCount.keys()).map(key => <tr key={key}>
               <th>{key}</th>
               <td>{numOpsCount.get(key)}</td>
             </tr>)}
-          </tbody> */}
+          </tbody>
         </table>
       </form>
     );
