@@ -1,8 +1,7 @@
-import React, { FC, useState } from 'react';
+import React, { FC } from 'react';
+import { useObserver } from 'mobx-react-lite';
 
-import { Car } from '../models/car';
-// import { useCars } from '../hooks/useCars';
-import { useList } from '../hooks/useList';
+import { CarToolStore } from '../stores/CarToolStore';
 
 import { ToolHeader } from './ToolHeader';
 import { CarTable } from './CarTable';
@@ -10,35 +9,13 @@ import { CarForm } from './CarForm';
 
 
 export interface CarToolProps {
-  cars: Car[];
+  store: CarToolStore;
 }
 
-export const CarTool: FC<CarToolProps> = (props) => {
+export const CarTool: FC<CarToolProps> = ({ store }) => {
 
 
-  const [ cars, addCar, saveCar, deleteCar ] = useList(props.cars.slice());
-  const [ editCarId, setEditCarId ] = useState(-1);
-
-  const cancelEditCar = () => setEditCarId(-1);
-
-  const addCarAndCancelEditCar = (car: Car) => {
-    addCar(car);
-    cancelEditCar();
-  };
-
-  const saveCarAndCancelEditCar = (car: Car) => {
-    saveCar(car);
-    cancelEditCar();
-  };
-
-  const deleteCarAndCancelEditCar = (carId: number) => {
-    deleteCar(carId);
-    cancelEditCar();
-  };
-
-  console.log('updated cars', cars);
-
-  return (
+  return useObserver(() => (
     <>
       <ToolHeader>
         <h1>
@@ -46,11 +23,11 @@ export const CarTool: FC<CarToolProps> = (props) => {
           <small>The best car tool ever!</small>
         </h1>
       </ToolHeader>
-      <CarTable cars={cars} editCarId={editCarId}
-        onEditCar={setEditCarId} onDeleteCar={deleteCarAndCancelEditCar}
-        onSaveCar={saveCarAndCancelEditCar} onCancelCar={cancelEditCar} />
-      <CarForm buttonText="Add Car" onSubmitCar={addCarAndCancelEditCar} />
+      <CarTable cars={store.cars.slice()} editCarId={store.editCarId}
+        onEditCar={store.editCar} onDeleteCar={store.removeCar}
+        onSaveCar={store.replaceCar} onCancelCar={store.cancelCar} />
+      <CarForm buttonText="Add Car" onSubmitCar={store.appendCar} />
     </>
-  );
+  ));
 
 };
