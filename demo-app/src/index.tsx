@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import ReactDOM from 'react-dom';
 import { observable, action } from 'mobx';
 import { useObserver } from 'mobx-react-lite';
@@ -11,8 +11,23 @@ class CalcToolStore {
   result = 0;
 
   @action.bound
-  increment() {
-    this.result++;
+  add(val: number) {
+    this.result += val;
+  }
+
+  @action.bound
+  subtract(val: number) {
+    this.result -= val;
+  }
+
+  @action.bound
+  multiply(val: number) {
+    this.result *= val;
+  }
+
+  @action.bound
+  divide(val: number) {
+    this.result /= val;
   }
 
 }
@@ -23,14 +38,29 @@ interface CalcToolProps {
 
 const CalcTool: FC<CalcToolProps> = ({ store }) => {
 
+  const [ numInput, setNumInput ] = useState(0);
+
   return useObserver(() => {
 
     return (
       <form>
         <div>Result: {store.result}</div>
         <div>
-          <button type="button" onClick={store.increment}>
-            Increment
+          Num: <input type="number" value={numInput}
+            onChange={(e) => setNumInput(Number(e.target.value))} />
+        </div>
+        <div>
+          <button type="button" onClick={() => store.add(numInput)}>
+            +
+          </button>
+          <button type="button" onClick={() => store.subtract(numInput)}>
+            -
+          </button>
+          <button type="button" onClick={() => store.multiply(numInput)}>
+            *
+          </button>
+          <button type="button" onClick={() => store.divide(numInput)}>
+            /
           </button>
         </div>
       </form>
