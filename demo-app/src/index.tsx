@@ -49,7 +49,14 @@ class CalcToolStore {
     this.history.forEach(entry => {
 
       if (numOpsCounts.has(entry.opName)) {
-        numOpsCounts.set(entry.opName, numOpsCounts.get(entry.opName) + 1);
+
+        const opValue = numOpsCounts.get(entry.opName);
+
+        if (opValue == null) {
+          return;
+        }
+
+        numOpsCounts.set(entry.opName, opValue + 1);
       } else {
         numOpsCounts.set(entry.opName, 1);
       }
@@ -161,9 +168,9 @@ const CalcTool: FC<CalcToolProps> = ({ store }) => {
         <table>
           <caption>Operation Counts</caption>
           <tbody>
-            {Array.from(numOpsCount.keys).map(key => <tr key={key}>
+            {Array.from(numOpsCount.keys()).map(key => <tr key={key}>
               <th>{key}</th>
-              <td>{numOpsCount.get[key]}</td>
+              <td>{numOpsCount.get(key)}</td>
             </tr>)}
           </tbody>
         </table>
