@@ -1,6 +1,6 @@
 import React, { FC, useState } from 'react';
 import ReactDOM from 'react-dom';
-import { observable, action } from 'mobx';
+import { observable, action, isObservableArray, computed } from 'mobx';
 import { useObserver } from 'mobx-react-lite';
 
 import 'mobx-react-lite/batchingForReactDom';
@@ -20,14 +20,15 @@ type HistoryEntry = {
 class CalcToolStore {
 
   @observable
-  result = 0;
-
-  @observable
   history: HistoryEntry[] = [];
+
+  @computed
+  get result() {
+    return this.history.length;
+  };
 
   @action.bound
   add(val: number) {
-    this.result += val;
     this.history.push({
       opName: 'Add',
       opValue: val,
@@ -37,7 +38,6 @@ class CalcToolStore {
 
   @action.bound
   subtract(val: number) {
-    this.result -= val;
     this.history.push({
       opName: 'Subtract',
       opValue: val,
@@ -47,7 +47,6 @@ class CalcToolStore {
 
   @action.bound
   multiply(val: number) {
-    this.result *= val;
     this.history.push({
       opName: 'Multiply',
       opValue: val,
@@ -57,12 +56,25 @@ class CalcToolStore {
 
   @action.bound
   divide(val: number) {
-    this.result /= val;
     this.history.push({
       opName: 'Divide',
       opValue: val,
       id: Math.max(...this.history.map(c => c.id), 0) + 1,
     });
+  }
+
+  @action.bound
+  clear() {
+
+    if (isObservableArray(this.history)) {
+      this.history.clear();
+    }
+  }
+
+  @action.bound
+  removeHistoryEntry(entryId: number) {
+    const entryIndex = this.history.findIndex(c => c.id === entryId);
+    this.history.splice(entryIndex, 1);
   }
 
 }
@@ -74,6 +86,11 @@ interface CalcToolProps {
 const CalcTool: FC<CalcToolProps> = ({ store }) => {
 
   const [ numInput, setNumInput ] = useState(0);
+
+  const clear = () => {
+    setNumInput(0);
+    store.clear();
+  }
 
   return useObserver(() => {
 
@@ -97,11 +114,15 @@ const CalcTool: FC<CalcToolProps> = ({ store }) => {
           <button type="button" onClick={() => store.divide(numInput)}>
             /
           </button>
+          <button type="button" onClick={clear}>Clear</button>
         </div>
         <ul>
           {store.history.map(entry =>
             <li key={entry.id}>
               {entry.opName} - {entry.opValue}
+              <button type="button" onClick={() => store.removeHistoryEntry(entry.id)}>
+                X
+              </button>
             </li>)}
         </ul>
       </form>
