@@ -47,7 +47,11 @@ class CalcToolStore {
     const numOpsCounts: any = {};
 
     this.history.forEach(entry => {
-      numOpsCounts[entry.opName]++;
+      if (numOpsCounts[entry.opName]) {
+        numOpsCounts[entry.opName]++;
+      } else {
+        numOpsCounts[entry.opName] = 1;
+      }
     });
 
     // const numOpsCounts = new Map<string, number>();
