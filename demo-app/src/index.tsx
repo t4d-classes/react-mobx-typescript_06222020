@@ -44,24 +44,25 @@ class CalcToolStore {
   get numOps() {
 
     // let's use this object as map, not a real object structue with a fixed set of properties
-    const numOpsCounts = new Map<string, number>();
+    const numOpsCounts: any = {};
 
     this.history.forEach(entry => {
-
-      if (numOpsCounts.has(entry.opName)) {
-
-        const opValue = numOpsCounts.get(entry.opName);
-
-        if (opValue == null) {
-          return;
-        }
-
-        numOpsCounts.set(entry.opName, opValue + 1);
-      } else {
-        numOpsCounts.set(entry.opName, 1);
-      }
-
+      numOpsCounts[entry.opName] = entry.opValue;
     });
+
+    // const numOpsCounts = new Map<string, number>();
+
+    // this.history.forEach(entry => {
+    //   if (numOpsCounts.has(entry.opName)) {
+    //     const opValue = numOpsCounts.get(entry.opName);
+    //     if (opValue == null) {
+    //       return;
+    //     }
+    //     numOpsCounts.set(entry.opName, opValue + 1);
+    //   } else {
+    //     numOpsCounts.set(entry.opName, 1);
+    //   }
+    // });
 
     return numOpsCounts;
   }
@@ -168,11 +169,17 @@ const CalcTool: FC<CalcToolProps> = ({ store }) => {
         <table>
           <caption>Operation Counts</caption>
           <tbody>
+            {Object.keys(numOpsCount).map(key => <tr key={key}>
+              <th>{key}</th>
+              <td>{numOpsCount[key]}</td>
+            </tr>)}
+          </tbody>
+          {/* <tbody>
             {Array.from(numOpsCount.keys()).map(key => <tr key={key}>
               <th>{key}</th>
               <td>{numOpsCount.get(key)}</td>
             </tr>)}
-          </tbody>
+          </tbody> */}
         </table>
       </form>
     );
