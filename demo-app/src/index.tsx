@@ -11,10 +11,16 @@ import 'mobx-react-lite/batchingForReactDom';
 //   opValue: number;
 // }
 
+const ADD = 'Add';
+const SUBTRACT = 'Subtract';
+const MULTIPLY = 'Multiply';
+const DIVIDE = 'Divide';
+
 type HistoryEntry = {
   id: number,
   opName: string,
   opValue: number,
+  opFn: (result: number, opValue: number) => number
 };
 
 class CalcToolStore {
@@ -24,41 +30,39 @@ class CalcToolStore {
 
   @computed
   get result() {
-    return this.history.length;
+
+    let result = 0;
+
+    this.history.forEach(entry => {
+      result = entry.opFn(result, entry.opValue);
+    });
+
+    return result;
   };
 
-  @action.bound
-  add(val: number) {
-    this.history.push({
-      opName: 'Add',
-      opValue: val,
-      id: Math.max(...this.history.map(c => c.id), 0) + 1,
+  @computed
+  get numOps() {
+
+    // let's use this object as map, not a real object structue with a fixed set of properties
+    const numOpsCounts = new Map<string, number>();
+
+    this.history.forEach(entry => {
+
+      if (numOpsCounts.has(entry.opName)) {
+        numOpsCounts.set(entry.opName, numOpsCounts.get(entry.opName) + 1);
+      } else {
+        numOpsCounts.set(entry.opName, 1);
+      }
+
     });
+
+    return numOpsCounts;
   }
 
   @action.bound
-  subtract(val: number) {
+  doOp(op: { opName: string, opValue: number, opFn: (result: number, opValue: number) => number }) {
     this.history.push({
-      opName: 'Subtract',
-      opValue: val,
-      id: Math.max(...this.history.map(c => c.id), 0) + 1,
-    });
-  }
-
-  @action.bound
-  multiply(val: number) {
-    this.history.push({
-      opName: 'Multiply',
-      opValue: val,
-      id: Math.max(...this.history.map(c => c.id), 0) + 1,
-    });
-  }
-
-  @action.bound
-  divide(val: number) {
-    this.history.push({
-      opName: 'Divide',
-      opValue: val,
+      ...op,
       id: Math.max(...this.history.map(c => c.id), 0) + 1,
     });
   }
@@ -76,8 +80,30 @@ class CalcToolStore {
     const entryIndex = this.history.findIndex(c => c.id === entryId);
     this.history.splice(entryIndex, 1);
   }
-
 }
+
+const add = (a: number, b: number) => a + b;
+const subtract = (a: number, b: number) => a - b;
+const multiply = (a: number, b: number) => a * b;
+const divide = (a: number, b: number) => a / b;
+
+const createAddOp = (val: number) => {
+  return { opName: ADD, opValue: val, opFn: add };
+};
+
+const createSubtractOp = (val: number) => {
+  return { opName: SUBTRACT, opValue: val, opFn: subtract };
+};
+
+const createMultiplyOp = (val: number) => {
+  return { opName: MULTIPLY, opValue: val, opFn: multiply };
+};
+
+const createDivideOp = (val: number) => {
+  return { opName: DIVIDE, opValue: val, opFn: divide };
+};
+
+
 
 interface CalcToolProps {
   store: CalcToolStore;
@@ -90,9 +116,12 @@ const CalcTool: FC<CalcToolProps> = ({ store }) => {
   const clear = () => {
     setNumInput(0);
     store.clear();
-  }
+  };
+
 
   return useObserver(() => {
+
+    const numOpsCount = store.numOps;
 
     return (
       <form>
@@ -102,17 +131,21 @@ const CalcTool: FC<CalcToolProps> = ({ store }) => {
             onChange={(e) => setNumInput(Number(e.target.value))} />
         </div>
         <div>
-          <button type="button" onClick={() => store.add(numInput)}>
+          <button type="button" onClick={() => store.doOp(createAddOp(numInput))}>
             +
           </button>
-          <button type="button" onClick={() => store.subtract(numInput)}>
+          <button type="button" onClick={() => store.doOp(createSubtractOp(numInput))}>
             -
           </button>
-          <button type="button" onClick={() => store.multiply(numInput)}>
+          <button type="button" onClick={() => store.doOp(createMultiplyOp(numInput))}>
             *
           </button>
-          <button type="button" onClick={() => store.divide(numInput)}>
+          <button type="button" onClick={() => store.doOp(createDivideOp(numInput))}>
             /
+          </button>
+          <button type="button"
+            onClick={() => store.doOp({ opName: 'EXP', opValue: numInput, opFn: (a: number, b: number) => a ** b})}>
+            ^
           </button>
           <button type="button" onClick={clear}>Clear</button>
         </div>
@@ -125,6 +158,15 @@ const CalcTool: FC<CalcToolProps> = ({ store }) => {
               </button>
             </li>)}
         </ul>
+        <table>
+          <caption>Operation Counts</caption>
+          <tbody>
+            {Array.from(numOpsCount.keys).map(key => <tr key={key}>
+              <th>{key}</th>
+              <td>{numOpsCount.get[key]}</td>
+            </tr>)}
+          </tbody>
+        </table>
       </form>
     );
 
