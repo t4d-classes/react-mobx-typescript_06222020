@@ -47,18 +47,18 @@ class CalcToolStore {
     const numOpsCounts: any = {};
 
     this.history.forEach(entry => {
-      numOpsCounts[entry.opName] = entry.opValue;
+      numOpsCounts[entry.opName]++;
     });
 
     // const numOpsCounts = new Map<string, number>();
 
     // this.history.forEach(entry => {
     //   if (numOpsCounts.has(entry.opName)) {
-    //     const opValue = numOpsCounts.get(entry.opName);
-    //     if (opValue == null) {
+    //     const opCount = numOpsCounts.get(entry.opName);
+    //     if (opCount == null) {
     //       return;
     //     }
-    //     numOpsCounts.set(entry.opName, opValue + 1);
+    //     numOpsCounts.set(entry.opName, opCount + 1);
     //   } else {
     //     numOpsCounts.set(entry.opName, 1);
     //   }
