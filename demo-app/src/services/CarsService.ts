@@ -4,6 +4,8 @@ import { Car } from '../models/car';
 export interface ICarsService {
   allCars: () => Promise<Car[]>;
   appendCar: (car: Car) => Promise<Car>;
+  replaceCar: (car: Car) => Promise<Car>;
+  removeCar: (carId: number) => Promise<void>;
 }
 
 
@@ -38,5 +40,26 @@ export class CarsService implements ICarsService {
     return addedCar;
   }
 
+  async replaceCar(car: Car) {
 
+    const res = await fetch(this.baseUrl + '/cars/' + encodeURIComponent(car.id!), {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(car),
+    });
+
+    const replacedCar = await res.json();
+
+    return replacedCar;
+  }
+
+  async removeCar(carId: number) {
+
+    await fetch(this.baseUrl + '/cars/' + encodeURIComponent(carId), {
+      method: 'DELETE',
+    });
+
+    return;
+  }
+ 
 }

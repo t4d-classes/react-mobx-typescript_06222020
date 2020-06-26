@@ -39,18 +39,16 @@ export class CarToolStore {
   });
 
   @action.bound
-  replaceCar(car: Car) {
-    const carIndex = this.cars.findIndex(c => c.id === car.id);
-    this.cars[carIndex] = car;
-    this.editCarId = -1;
-  }
+  replaceCar = flow(function* replaceCarFlow(this: CarToolStore, car: Car) {
+    yield this.carsSvc.replaceCar(car);
+    yield this.refreshCars();
+  });
 
   @action.bound
-  removeCar(carId: number) {
-    const carIndex = this.cars.findIndex(c => c.id === carId);
-    this.cars.splice(carIndex, 1);    
-    this.editCarId = -1;
-  }
+  removeCar = flow(function* removeCarFlow(this: CarToolStore, carId: number) {
+    yield this.carsSvc.removeCar(carId);
+    yield this.refreshCars();
+  });
 
   @action.bound
   editCar(carId: number) {
