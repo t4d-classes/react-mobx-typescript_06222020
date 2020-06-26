@@ -17,20 +17,41 @@
 
 .page-header {
   grid-area: header;
+  display: flex;
+  align-items: center;
+  padding-left: 20px;
 }
 
 .main-menu {
   grid-area: menu;
+  padding-left: 20px;
+  display: flex;
+  align-items: center;
+}
+
+.main-menu > ul {
+  list-style-type: none;
+  display: flex;
+  padding: 0;
+  margin: 0;
+}
+
+.main-menu > ul > li {
+  padding: 4px;
 }
 
 .content {
   grid-area: content;
+  padding: 20px;
 }
 
 .sidebar {
   grid-area: sidebar;
+  padding: 20px;
 }
 
 .page-footer {
   grid-area: footer;
+  padding-top: 10px;
+  text-align: center;
 }

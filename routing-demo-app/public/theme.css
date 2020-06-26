@@ -1,0 +1,26 @@
+:root {
+  font-family: arial;
+  font-size: 100%;
+}
+
+.page-header, .page-footer {
+  background-color: navy;
+  color: white;
+}
+
+.sidebar {
+  background-color: orange;
+}
+
+.main-menu {
+  background-color: lightgray;
+}
+
+.main-menu a.menu-link {
+  color: black;
+  text-decoration: none;
+}
+
+.main-menu a.menu-link:hover {
+  text-decoration: underline;
+}

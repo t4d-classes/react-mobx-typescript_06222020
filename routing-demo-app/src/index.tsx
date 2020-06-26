@@ -12,9 +12,9 @@ ReactDOM.render(
     </header>
     <nav className="main-menu">
       <ul>
-        <li><a href="#">Home</a></li>
-        <li><a href="#">About</a></li>
-        <li><a href="#">Contact</a></li>
+        <li><a href="#" className="menu-link">Home</a></li>
+        <li><a href="#" className="menu-link">About</a></li>
+        <li><a href="#" className="menu-link">Contact</a></li>
       </ul>
     </nav>
     <main className="content">
@@ -24,8 +24,7 @@ ReactDOM.render(
       Sidebar
     </aside>
     <footer className="page-footer">
-      <small>&copy; {new Date().getFullYear()}
-      A Cool Company, Inc. (formerly known as Contoso)</small>
+      <small>&copy; {new Date().getFullYear()} A Cool Company, Inc. (formerly known as Contoso)</small>
     </footer>
   </Layout>,
   document.getElementById('root')
