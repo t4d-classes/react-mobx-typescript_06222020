@@ -1,4 +1,4 @@
-import { observable, action } from 'mobx';
+import { observable, action, runInAction, flow } from 'mobx';
 
 import { Car } from '../models/car';
 import { ICarsService } from '../services/CarsService'
@@ -13,19 +13,30 @@ export class CarToolStore {
   @observable
   editCarId = -1;
 
-  @action.bound
-  async refreshCars() {
-    this.cars = await this.carsSvc.allCars();
-  }
+  // non-flow
+  // @action.bound
+  // async refreshCars() {
+  //   const cars = await this.carsSvc.allCars();
+
+  //   runInAction(() => {
+  //     this.cars = cars;
+  //     this.editCarId = -1;
+  //   });
+  // }
+
 
   @action.bound
-  appendCar(car: Car) {
-    this.cars.push({
-      ...car,
-      id: Math.max(...this.cars.map(c => c.id!), 0) + 1,
-    });
+  refreshCars = flow(function* refreshCarsFlow(this: CarToolStore) {
+    const cars = yield this.carsSvc.allCars();
+    this.cars = cars;
     this.editCarId = -1;
-  }
+  });
+
+  @action.bound
+  appendCar = flow(function* appendCarFlow(this: CarToolStore, car: Car) {
+    yield this.carsSvc.appendCar(car);
+    yield this.refreshCars();
+  });
 
   @action.bound
   replaceCar(car: Car) {

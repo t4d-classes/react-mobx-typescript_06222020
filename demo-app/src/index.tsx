@@ -15,6 +15,5 @@ const store = new CarToolStore(
 ReactDOM.render(
   <CarTool store={store} />,
   document.querySelector('#root'),
-
 );
 

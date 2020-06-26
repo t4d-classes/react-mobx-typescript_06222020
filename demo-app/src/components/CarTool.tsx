@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import { useObserver } from 'mobx-react-lite';
 
 import { CarToolStore } from '../stores/CarToolStore';
@@ -14,6 +14,9 @@ export interface CarToolProps {
 
 export const CarTool: FC<CarToolProps> = ({ store }) => {
 
+  useEffect(() => {
+   store.refreshCars(); 
+  }, [ store ]);
 
   return useObserver(() => (
     <>

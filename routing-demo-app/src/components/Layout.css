@@ -1,0 +1,36 @@
+.layout {
+
+  position: fixed;
+  top: 0; bottom: 0;
+  left: 0; right: 0;
+
+  display: grid;
+
+  grid-template-rows: 80px 50px auto 50px;
+  grid-template-columns: 3fr 1fr;
+  grid-template-areas: 
+    "header header"
+    "menu menu"
+    "content sidebar"
+    "footer footer";
+}
+
+.page-header {
+  grid-area: header;
+}
+
+.main-menu {
+  grid-area: menu;
+}
+
+.content {
+  grid-area: content;
+}
+
+.sidebar {
+  grid-area: sidebar;
+}
+
+.page-footer {
+  grid-area: footer;
+}
