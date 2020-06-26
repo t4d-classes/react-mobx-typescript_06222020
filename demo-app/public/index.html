@@ -185,6 +185,30 @@
     </script> -->
     <script>
 
+      // callback version
+      // const myFetch = (url, callback, options) => {
+
+      //   const opts = {
+      //     method: 'GET',
+      //     ...options,
+      //   };
+
+      //   // script variable
+      //   const xhr = new XMLHttpRequest();
+
+      //   xhr.addEventListener('readystatechange', () => {
+
+      //     if (xhr.readyState === 4 && xhr.status === 200) {
+      //       callback(JSON.parse(xhr.responseText));
+      //     }
+
+      //   });
+
+      //   xhr.open(opts.method, url);
+
+      //   xhr.send();
+      // }
+
       const myFetch = (url, callback, options) => {
 
         const opts = {
@@ -192,23 +216,73 @@
           ...options,
         };
 
-        // script variable
-        const xhr = new XMLHttpRequest();
+        return new Promise(resolve => {
 
-        xhr.addEventListener('readystatechange', () => {
+          // script variable
+          const xhr = new XMLHttpRequest();
 
-          if (xhr.readyState === 4 && xhr.status === 200) {
-            callback(JSON.parse(xhr.responseText));
-          }
+          xhr.addEventListener('readystatechange', () => {
+
+            if (xhr.readyState === 4 && xhr.status === 200) {
+              resolve(JSON.parse(xhr.responseText));
+            }
+
+          });
+
+          xhr.open(opts.method, url);
+
+          xhr.send();
 
         });
 
-        xhr.open(opts.method, url);
+      };
 
-        xhr.send();
-      }
+      const outputColors = colors => console.log(colors);
 
-      myFetch('http://localhost:3060/cars', cars => console.log(cars));
+      const outputData = async () => {
+
+        // const cars = await myFetch('http://localhost:3060/cars');
+        // const colors = await myFetch('http://localhost:3060/colors');
+
+        const [ cars, colors ] = await Promise.all([
+          myFetch('http://localhost:3060/cars'),
+          myFetch('http://localhost:3060/colors'),
+        ]);
+
+        return { cars, colors };
+      };
+
+      // const outputData = () => {
+
+      //   return myFetch('http://localhost:3060/cars')
+      //     .then(cars => {
+      //       return myFetch('http://localhost:3060/colors')
+      //               .then(colors => {
+      //                 return { cars, colors };
+      //               });
+      //     });
+      // };
+
+      outputData().then(data => console.log(data.cars, data.colors));
+
+
+      // myFetch('http://localhost:3060/cars', cars => {
+      //   console.log(cars);
+      //   myFetch('http://localhost:3060/colors', colors => {
+      //     console.log(colors);
+      //   });
+      // });
+
+      // fetch('http://localhost:3060/cars')
+      //   .then(res => res.json())
+      //   .then(fetch('http://localhost:3060/colors'))
+      //   .then(cars => {
+      //       console.log(cars);
+      //       return fetch('http://localhost:3060/colors');
+      //   })
+      //   .then(res => res.json())
+      //   .then(colors => console.log(colors));
+
 
 
     </script>
