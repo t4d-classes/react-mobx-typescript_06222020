@@ -185,7 +185,12 @@
     </script> -->
     <script>
 
-      const myFetch = () => {
+      const myFetch = (url, callback, options) => {
+
+        const opts = {
+          method: 'GET',
+          ...options,
+        };
 
         // script variable
         const xhr = new XMLHttpRequest();
@@ -193,17 +198,17 @@
         xhr.addEventListener('readystatechange', () => {
 
           if (xhr.readyState === 4 && xhr.status === 200) {
-            console.log(JSON.parse(xhr.responseText));
+            callback(JSON.parse(xhr.responseText));
           }
 
         });
 
-        xhr.open('GET', 'http://localhost:3060/cars');
+        xhr.open(opts.method, url);
 
         xhr.send();
       }
 
-      doIt();
+      myFetch('http://localhost:3060/cars', cars => console.log(cars));
 
 
     </script>
