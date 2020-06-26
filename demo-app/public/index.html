@@ -183,7 +183,7 @@
 
 
     </script> -->
-    <script>
+    <!-- <script>
 
       // callback version
       // const myFetch = (url, callback, options) => {
@@ -241,9 +241,11 @@
 
       const outputData = async () => {
 
+        // sequential
         // const cars = await myFetch('http://localhost:3060/cars');
         // const colors = await myFetch('http://localhost:3060/colors');
 
+        // group
         const [ cars, colors ] = await Promise.all([
           myFetch('http://localhost:3060/cars'),
           myFetch('http://localhost:3060/colors'),
@@ -285,6 +287,6 @@
 
 
 
-    </script>
+    </script> -->
   </body>
 </html>

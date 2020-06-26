@@ -1,15 +1,20 @@
-// import React from 'react';
-// import ReactDOM from 'react-dom';
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { configure } from 'mobx';
 
-// import { CarToolStore } from './stores/CarToolStore';
+import { CarsService } from './services/CarsService';
+import { CarToolStore } from './stores/CarToolStore';
 
-// import { CarTool } from './components/CarTool';
+import { CarTool } from './components/CarTool';
 
-// const store = new CarToolStore();
+configure({ enforceActions: 'always' });
 
-// ReactDOM.render(
-//   <CarTool store={store} />,
-//   document.querySelector('#root'),
+const store = new CarToolStore(
+  new CarsService('http://localhost:3060'));
 
-// );
+ReactDOM.render(
+  <CarTool store={store} />,
+  document.querySelector('#root'),
+
+);
 

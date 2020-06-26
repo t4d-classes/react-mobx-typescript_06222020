@@ -1,17 +1,22 @@
 import { observable, action } from 'mobx';
 
 import { Car } from '../models/car';
+import { ICarsService } from '../services/CarsService'
 
 export class CarToolStore {
 
+  constructor(private carsSvc: ICarsService) { }
+
   @observable
-  cars: Car[] = [
-    { id: 1, make: 'Ford', model: 'Fusion Hybrid', year: 2018, color: 'white', price: 45000 },
-    { id: 2, make: 'Tesla', model: 'S', year: 2019, color: 'red', price: 145000 },
-  ];
+  cars: Car[] = [];
 
   @observable
   editCarId = -1;
+
+  @action.bound
+  async refreshCars() {
+    this.cars = await this.carsSvc.allCars();
+  }
 
   @action.bound
   appendCar(car: Car) {
