@@ -156,5 +156,56 @@
       console.dir(Person2);
 
     </script> -->
+    <!-- <script>
+
+      const outer = () => {
+        
+        let t = 2;
+
+        setTimeout(() => {
+          t = 4;
+        }, 2000);
+
+        return () => {
+          console.log(t);
+        };
+      };
+
+      const inner = outer();
+
+      inner();
+
+      setTimeout(() => {
+        inner();
+      }, 4000);
+
+      //console.dir(inner);
+
+
+    </script> -->
+    <script>
+
+      const myFetch = () => {
+
+        // script variable
+        const xhr = new XMLHttpRequest();
+
+        xhr.addEventListener('readystatechange', () => {
+
+          if (xhr.readyState === 4 && xhr.status === 200) {
+            console.log(JSON.parse(xhr.responseText));
+          }
+
+        });
+
+        xhr.open('GET', 'http://localhost:3060/cars');
+
+        xhr.send();
+      }
+
+      doIt();
+
+
+    </script>
   </body>
 </html>
